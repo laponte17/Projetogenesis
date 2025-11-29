@@ -3,28 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protocolo Gênesis - Painel de Guerra</title>
+    <title>Protocolo Gênesis V2.4 - Reconstrução</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Incluir Font Awesome para ícones -->
     <script src="https://kit.fontawesome.com/a26c483a48.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e5e5e5; }
         h1, h2, .title-font { font-family: 'Cinzel', serif; }
         .tab-btn { transition: all 0.3s ease; border-bottom: 2px solid transparent; }
-        .tab-btn.active { border-bottom: 2px solid #d4af37; color: #d4af37; }
+        .tab-btn.active { border-bottom: 2px solid #d4af37; color: #d4af37; } /* Dourado */
         .card { background: #111111; border: 1px solid #333; }
-        .risk-card { 
-            background: linear-gradient(180deg, #1a0505 0%, #000000 100%); 
-            border: 1px solid #450a0a; 
-            box-shadow: 0 0 5px rgba(220, 38, 38, 0.4); /* Leve brilho vermelho para risco */
-        }
-        .status-badge { font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 0.2rem; text-transform: uppercase; font-weight: bold; }
-        .status-urgent { background-color: #7f1d1d; color: #fca5a5; }
-        .status-negotiating { background-color: #713f12; color: #fde047; }
-        .status-paid { background-color: #064e3b; color: #6ee7b7; }
-
-        /* Estilo para o botão S.O.S */
         .panic-btn {
             background: linear-gradient(45deg, #7f1d1d, #991b1b);
             box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
@@ -41,148 +29,121 @@
 
     <div class="max-w-5xl mx-auto p-4 sm:p-6">
         
-        <!-- Cabeçalho -->
+        <!-- Header -->
         <header class="text-center mb-8 py-6 border-b border-gray-800">
-            <h1 class="text-3xl sm:text-5xl font-bold text-white mb-2 tracking-wider">PROTOCOLO GÊNESIS</h1>
-            <p class="text-gray-500 text-sm sm:text-base">"Transformem-se pela renovação da sua mente." (Romanos 12:2)</p>
+            <h1 class="text-3xl sm:text-5xl font-bold text-white mb-2 tracking-wider">PROTOCOLO GÊNESIS V2.4</h1>
+            <p class="text-gray-500 text-sm sm:text-base">"Transformai-vos pela renovação da vossa mente." (Romanos 12:2)</p>
         </header>
 
-        <!-- Navegação das Abas -->
-        <nav class="flex justify-center space-x-2 sm:space-x-4 mb-8 overflow-x-auto pb-2">
-            <button onclick="openTab(event, 'prioridade')" class="tab-btn active px-4 py-2 whitespace-nowrap font-bold text-red-500"><i class="fas fa-siren-on mr-2"></i>Prioridade Zero 🚨</button>
-            <button onclick="openTab(event, 'rotina')" class="tab-btn px-4 py-2 whitespace-nowrap"><i class="fas fa-hourglass-half mr-2"></i>Rotina Blindada</button>
-            <button onclick="openTab(event, 'trabalho')" class="tab-btn px-4 py-2 whitespace-nowrap"><i class="fas fa-briefcase mr-2"></i>Guerra Financeira</button>
+        <!-- Navegação -->
+        <nav class="flex justify-center space-x-2 sm:space-x-4 mb-8 overflow-x-auto text-sm">
+            <button onclick="openTab(event, 'rotina')" class="tab-btn active px-4 py-2 whitespace-nowrap"><i class="fas fa-hourglass-half mr-2"></i>Rotina Blindada</button>
+            <button onclick="openTab(event, 'trabalho')" class="tab-btn px-4 py-2 whitespace-nowrap"><i class="fas fa-briefcase mr-2"></i>Guerra Produtividade</button>
             <button onclick="openTab(event, 'mentalidade')" class="tab-btn px-4 py-2 whitespace-nowrap"><i class="fas fa-brain mr-2"></i>Neuro & Bíblia</button>
-            <button onclick="openTab(event, 'sos')" class="tab-btn px-4 py-2 whitespace-nowrap text-red-400"><i class="fas fa-shield-alt mr-2"></i>S.O.S Crise</button>
+            <button onclick="openTab(event, 'sos')" class="tab-btn px-4 py-2 whitespace-nowrap text-red-500 font-bold"><i class="fas fa-shield-alt mr-2"></i>S.O.S Crise</button>
         </nav>
 
-        <!-- CONTEÚDO: PRIORIDADE ZERO (CONTAS DE RISCO) -->
-        <div id="prioridade" class="tab-content block space-y-6">
-            <div class="bg-red-900/10 border border-red-800 p-4 rounded-lg mb-6 text-center">
-                <h2 class="text-xl text-red-500 font-bold mb-2"><i class="fas fa-hand-holding-usd mr-2"></i>CONTAS MAIS URGENTES</h2>
-                <p class="text-sm text-gray-400">Neutralize (pague ou negocie) estas contas antes de qualquer outra coisa. A segurança é a primeira vitória.</p>
-            </div>
-
-            <!-- Lista de Credores de Risco -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                <!-- Credor 1 (Exemplo) -->
-                <div class="risk-card p-4 rounded-lg flex justify-between items-center">
-                    <div>
-                        <h3 class="text-lg font-bold text-white"><i class="fas fa-user-secret mr-2 text-red-500"></i>Cabelo</h3>
-                        <p class="text-xs text-gray-500">Status: <span class="status-badge status-negotiating">Negociando Prazo</span></p>
-                    </div>
-                    <div class="text-right">
-                        <button class="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded mb-1 w-full">Registrar Pagamento</button>
-                        <div class="text-xs text-yellow-500">Valor/Meta: R$ [Valor]</div>
-                    </div>
-                </div>
-
-                <!-- Credor 2 -->
-                <div class="risk-card p-4 rounded-lg flex justify-between items-center">
-                    <div>
-                        <h3 class="text-lg font-bold text-white"><i class="fas fa-user-secret mr-2 text-red-500"></i>Zé</h3>
-                        <p class="text-xs text-gray-500">Status: <span class="status-badge status-urgent">Urgente</span></p>
-                    </div>
-                    <div class="text-right">
-                        <button class="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded mb-1 w-full">Registrar Pagamento</button>
-                        <div class="text-xs text-yellow-500">Valor/Meta: R$ [Valor]</div>
-                    </div>
-                </div>
-
-                <!-- Credor 3 -->
-                <div class="risk-card p-4 rounded-lg flex justify-between items-center">
-                    <div>
-                        <h3 class="text-lg font-bold text-white"><i class="fas fa-user-secret mr-2 text-red-500"></i>Wanderlei</h3>
-                        <p class="text-xs text-gray-500">Status: <span class="status-badge status-negotiating">Negociando Prazo</span></p>
-                    </div>
-                    <div class="text-right">
-                        <button class="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded mb-1 w-full">Registrar Pagamento</button>
-                        <div class="text-xs text-yellow-500">Valor/Meta: R$ [Valor]</div>
-                    </div>
-                </div>
-
-                <!-- Credor 4 -->
-                <div class="risk-card p-4 rounded-lg flex justify-between items-center">
-                    <div>
-                        <h3 class="text-lg font-bold text-white"><i class="fas fa-user-secret mr-2 text-red-500"></i>Ítalo</h3>
-                        <p class="text-xs text-gray-500">Status: <span class="status-badge status-urgent">Urgente</span></p>
-                    </div>
-                    <div class="text-right">
-                        <button class="text-xs bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded mb-1 w-full">Registrar Pagamento</button>
-                        <div class="text-xs text-yellow-500">Valor/Meta: R$ [Valor]</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Estratégia de Negociação -->
-            <div class="card p-6 rounded-lg border border-yellow-800 mt-6">
-                <h3 class="text-xl font-bold text-yellow-500 mb-4"><i class="fas fa-handshake mr-2"></i>Script de Negociação (Copiou/Colou)</h3>
-                <p class="text-sm text-gray-400 mb-4">Use este script para ganhar tempo. A sinceridade no esforço reduz a pressão.</p>
-                <div class="bg-black p-4 rounded border border-gray-700 font-mono text-sm text-gray-300 overflow-x-auto">
-                    "Fala [Nome do Credor], bom dia.<br><br>Estou te mandando essa mensagem para te dar uma posição. Tive um imprevisto, mas estou fechando dois serviços essa semana especificamente para acertar isso com você.<br><br>Posso te dar um retorno mais concreto na [Dia da Semana]? Meu foco total está em resolver isso."
-                </div>
-            </div>
-        </div>
-
         <!-- CONTEÚDO: ROTINA BLINDADA -->
-        <div id="rotina" class="tab-content hidden space-y-6">
+        <div id="rotina" class="tab-content block space-y-6">
             <div class="card p-6 rounded-lg">
-                <h2 class="text-2xl text-white mb-4 border-l-4 border-blue-600 pl-3">Manhã: Ativação e Conexão</h2>
-                <ul class="space-y-3">
-                    <li class="flex items-start"><span class="text-blue-500 mr-2 font-bold">05:00</span> <span>**Despertar e Oração:** Priorize a Palavra. Diga em voz alta: "Eu sou o homem que honra a Palavra e a minha família."</span></li>
-                    <li class="flex items-start"><span class="text-blue-500 mr-2 font-bold">05:45</span> <span>**Choque Térmico:** Banho frio. Quebra o ciclo de dopamina da noite passada.</span></li>
-                    <li class="flex items-start"><span class="text-blue-500 mr-2 font-bold">07:30</span> <span>**Comunicação Dona Mariana:** Mensagem "Bom Dia e Foco". Reafirmar amor e atividade de trabalho.</span></li>
-                </ul>
-            </div>
+                <h2 class="text-2xl text-white mb-4 border-l-4 border-blue-600 pl-3">Rotina para Renovar a Mente</h2>
+                <p class="text-sm text-gray-400 mb-4">Seu autocontrole depende da repetição disciplinada desses hábitos.</p>
+                
+                <div class="space-y-4">
+                    <!-- Manhã -->
+                    <div class="p-4 bg-gray-900 rounded border-l-4 border-blue-500">
+                        <p class="text-lg font-bold text-blue-400">05:00 - 07:30: Neuro-Ativação (Propósito)</p>
+                        <ul class="text-sm text-gray-400 list-disc pl-5 space-y-1 mt-1">
+                            <li>**Oração e Palavra (Córtex Pré-Frontal):** Leia e escreva um versículo (força o CPF a agir).</li>
+                            <li>**Banho Frio/Exercício (Dopamina Saudável):** 10-15 minutos. Cria dopamina de esforço e disciplina a carne.</li>
+                            <!-- Comunicação Matinal Removida -->
+                        </ul>
+                    </div>
+                    
+                    <!-- Dia -->
+                    <div class="p-4 bg-gray-900 rounded border-l-4 border-yellow-500">
+                        <p class="text-lg font-bold text-yellow-400">08:00 - 18:00: Deep Work e Batalha Financeira</p>
+                        <ul class="text-sm text-gray-400 list-disc pl-5 space-y-1 mt-1">
+                            <li>**Foco:** 3 sessões de trabalho focado de 90 minutos (sem celular, sem internet não-essencial).</li>
+                            <li>**Micro-Ação:** A cada 90 minutos, anote 1 coisa que conquistou (dopamina de recompensa).</li>
+                            <li>**Estudo:** Consuma seu conteúdo de estoicismo/produtividade durante intervalos e trabalho.</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Noite -->
+                    <div class="p-4 bg-gray-900 rounded border-l-4 border-purple-500">
+                        <p class="text-lg font-bold text-purple-400">19:00 - 22:00: Conexão e Descanso</p>
+                        <ul class="text-sm text-gray-400 list-disc pl-5 space-y-1 mt-1">
+                            <li>**21:30 - Comunicação Noturna:** Reafirme o amor e o compromisso. Compartilhe 1 vitória do dia.</li>
+                            <li>**Exame de Consciência:** Escreva 3 coisas pelas quais é grato (desarma a Amígdala).</li>
+                            <li>**Neurociência:** 1h antes de dormir, desligue telas para produzir melatonina.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Código de Honra -->
+                <div class="mt-6 p-4 bg-gray-800 rounded border-l-4 border-green-500">
+                    <h3 class="text-lg font-bold text-green-400 mb-2">🚫 O Código de Honra (Meus Não-Negociáveis)</h3>
+                    <ul class="text-sm text-gray-300 list-decimal pl-5 space-y-2">
+                        <li><strong>Sobriedade e Saúde:</strong> Cuidar do meu corpo como templo sagrado.</li>
+                        <li><strong>Integridade Financeira:</strong> O dinheiro virá apenas do fruto do meu trabalho honesto e esforço.</li>
+                        <li><strong>Verdade Radical:</strong> Sem mentiras ou omissões. Transparência total.</li>
+                        <li><strong>Responsabilidade:</strong> Buscar refúgio em Deus ou comunicar alguém de confiança em momentos de fraqueza. Nunca me isolar no erro.</li>
+                    </ul>
+                </div>
 
-            <div class="card p-6 rounded-lg">
-                <h2 class="text-2xl text-white mb-4 border-l-4 border-yellow-600 pl-3">Dia: Deep Work (Trabalho Profundo)</h2>
-                <ul class="space-y-3">
-                    <li class="flex items-start"><span class="text-yellow-500 mr-2 font-bold">08:00</span> <span>**Gold Hour (Geração de Receita):** Foco total no plano de vendas e cobranças para pagar a Prioridade Zero.</span></li>
-                    <li class="flex items-start"><span class="text-yellow-500 mr-2 font-bold">14:00</span> <span>**Bloco de Execução:** Entregar projetos e estudar. Mantenha os fones de ouvido para evitar distrações.</span></li>
-                </ul>
-            </div>
-
-            <div class="card p-6 rounded-lg">
-                <h2 class="text-2xl text-white mb-4 border-l-4 border-purple-600 pl-3">Noite: Descompressão e Exame</h2>
-                <ul class="space-y-3">
-                    <li class="flex items-start"><span class="text-purple-500 mr-2 font-bold">21:30</span> <span>**Comunicação Dona Mariana:** Mensagem "Relatório e Carinho". Resumo do esforço do dia.</span></li>
-                    <li class="flex items-start"><span class="text-purple-500 mr-2 font-bold">22:00</span> <span>**Exame de Consciência:** Escreva 3 coisas que fez certo. Dificulte o acesso ao celular e durma.</span></li>
-                </ul>
             </div>
         </div>
-
-        <!-- CONTEÚDO: GUERRA FINANCEIRA -->
+        
+        <!-- CONTEÚDO: GUERRA PRODUTIVIDADE (MARKETING) -->
         <div id="trabalho" class="tab-content hidden space-y-6">
             <div class="card p-6 rounded-lg border border-green-900">
-                <h2 class="text-2xl text-green-400 mb-4">Metas e Estratégia de Vendas</h2>
+                <h2 class="text-2xl text-green-400 mb-4">Plano Tático: Geração de Receita (Marketing)</h2>
+                
+                <!-- META FINANCEIRA -->
+                <div class="bg-green-900/30 border border-green-500 p-4 rounded-lg mb-6 text-center">
+                    <h3 class="text-3xl font-bold text-green-400 mb-2"><i class="fas fa-chart-line mr-2"></i>META: R$ 5.000 / MÊS</h3>
+                    <p class="text-sm text-gray-400">Foco total na geração de receita para honrar compromissos e construir o futuro.</p>
+                </div>
+
+                <p class="text-gray-400 mb-4">Sua fuga é o trabalho. "A obra de suas mãos" é sua arma. O foco é a **VENDA IMEDIATA**.</p>
+
                 <div class="space-y-4">
                     <div class="bg-gray-900 p-4 rounded">
-                        <h3 class="font-bold text-white">1. Meta: R$ 1.500 em Receita Confirmada (7 Dias)</h3>
-                        <p class="text-sm text-gray-400">Todo o valor deve ser usado para pagar a Prioridade Zero.</p>
+                        <h3 class="font-bold text-white"><i class="fas fa-bullhorn mr-2"></i>1. A Metodologia do Leão (Venda Direta)</h3>
+                        <p class="text-sm text-gray-400">Não perca tempo com marketing complexo. Vá para a **Batalha de Vendas**.</p>
+                        <ul class="list-decimal pl-5 mt-2 text-sm text-gray-500">
+                            <li>**O Alvo (08:00 - 12:00):** 30 Prospecções/dia (ligações, WhatsApp, Instagram).</li>
+                            <li>**O Pitch (A Oferta):** Soluções rápidas e de baixo custo inicial (ex: Site One-Page + Campanha de Tráfego de 7 dias).</li>
+                            <li>**Cobrança:** Foco total em cobrar pagamentos pendentes e garantir o fluxo de caixa.</li>
+                        </ul>
                     </div>
+
                     <div class="bg-gray-900 p-4 rounded">
-                        <h3 class="font-bold text-white">2. Prospecção Ativa (20/Dia)</h3>
-                        <p class="text-sm text-gray-400">Ofereça serviços de alto valor (Sites Express, Gestão de Tráfego Rápido) para clientes locais.</p>
+                        <h3 class="font-bold text-white"><i class="fas fa-cogs mr-2"></i>2. Desenvolvimento de Habilidades (Estudo)</h3>
+                        <p class="text-sm text-gray-400">Use o tempo de estudo (18:00 - 21:00) para aprender o que te faz mais dinheiro.</p>
+                        <ul class="list-disc pl-5 mt-2 text-sm text-gray-500">
+                            <li>**Vendas:** Psicologia da Persuasão e Fechamento.</li>
+                            <li>**Tráfego:** Otimização de Anúncios de Baixo Custo (Google e Facebook Ads).</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- CONTEÚDO: NEURO & BÍBLIA -->
-        <div id="mentalidade" class="tab-content hidden space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+         <div id="mentalidade" class="tab-content hidden space-y-6">
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="card p-6 rounded-lg border-t-4 border-cyan-500">
                     <h3 class="text-xl font-bold text-cyan-400 mb-3"><i class="fas fa-microchip mr-2"></i>O Cérebro Adicto</h3>
-                    <p class="text-sm text-gray-400 mb-3"><strong>Recompensa de Esforço:</strong> Troque a dopamina do vício pela dopamina da vitória (fechar uma venda, terminar uma tarefa).</p>
+                    <p class="text-sm text-gray-400 mb-3">**Recompensa de Esforço:** Troque a dopamina do vício pela dopamina da vitória (fechar uma venda, terminar uma tarefa).</p>
                 </div>
                 <div class="card p-6 rounded-lg border-t-4 border-yellow-500">
                     <h3 class="text-xl font-bold text-yellow-400 mb-3"><i class="fas fa-bible mr-2"></i>A Armadura de Deus</h3>
-                    <p class="text-sm text-gray-400 mb-3"><strong>Fuga da Tentação:</strong> Fuja da impureza. Mantenha o isolamento. A luta é sua, mas a Força vem de Cima.</p>
+                    <p class="text-sm text-gray-400 mb-3">**Fuga da Tentação:** Fuja da impureza. Mantenha o isolamento. A luta é sua, mas a Força vem de Cima.</p>
                 </div>
             </div>
-            <!-- Playlists -->
+             <!-- Playlists -->
             <div class="card p-6 rounded-lg mt-4">
                 <h3 class="text-xl font-bold text-gray-200 mb-3">Trilha Sonora para Foco (Spotify)</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -200,19 +161,24 @@
 
         <!-- CONTEÚDO: S.O.S (PÂNICO) -->
         <div id="sos" class="tab-content hidden space-y-6 text-center">
-            <button class="panic-btn text-white font-bold py-4 px-8 rounded-full shadow-lg text-xl mb-8">
-                <i class="fas fa-hand-rock mr-2"></i> NÃO CEDER
-            </button>
             <div class="bg-red-900/20 border border-red-600 p-8 rounded-xl">
-                <h2 class="text-3xl font-bold text-red-500 mb-4"><i class="fas fa-exclamation-triangle"></i> PROTOCOLO DE EMERGÊNCIA</h2>
-                <div class="space-y-4 max-w-md mx-auto text-left">
-                    <div class="p-4 bg-black rounded border border-gray-700">
-                        <h4 class="text-red-400 font-bold">PASSO 1: RESPIRAÇÃO LÓGICA</h4>
-                        <p class="text-sm">Respire fundo 10 vezes (4s inspira, 4s segura, 4s solta). Force seu Córtex Pré-Frontal a assumir o controle.</p>
+                <h2 class="text-3xl font-bold text-red-500 mb-4"><i class="fas fa-exclamation-triangle"></i> S.O.S: Protocolo de Crise</h2>
+                <p class="text-lg text-gray-300 mb-6">A vontade é a Amígdala sequestrando sua lógica. A luta dura 15-20 minutos. Não ceda.</p>
+                                
+                <div class="space-y-4 max-w-md mx-auto">
+                    <div class="p-4 bg-black rounded border border-gray-700 text-left">
+                        <h4 class="text-red-400 font-bold">PASSO 1: CONFESSE A FRAQUEZA</h4>
+                        <p class="text-sm">Vá para um espelho ou escreva em uma folha: "Eu sou fraco agora, mas não serei escravo. O vício é uma mentira que me promete paz, mas me dá mais dívidas."</p>
                     </div>
-                    <div class="p-4 bg-black rounded border border-gray-700">
-                        <h4 class="text-red-400 font-bold">PASSO 2: MUDANÇA DE FOCO</h4>
-                        <p class="text-sm">Abra a aba **Prioridade Zero**. Leia o nome de um credor. Lembre-se: O vício te leva a perdê-la. O trabalho te leva à vitória.</p>
+                    
+                    <div class="p-4 bg-black rounded border border-gray-700 text-left">
+                        <h4 class="text-red-400 font-bold">PASSO 2: CHOQUE FÍSICO</h4>
+                        <p class="text-sm">Jogue água gelada no rosto/cabeça ou faça 30 segundos de exercício físico intenso. O choque reseta o sistema nervoso.</p>
+                    </div>
+
+                    <div class="p-4 bg-black rounded border border-gray-700 text-left">
+                        <h4 class="text-red-400 font-bold">PASSO 3: FUJA E ORE</h4>
+                        <p class="text-sm">Saia do local de isolamento. Ligue a música clássica (Calma e Lógica). Repita em voz alta: "Deus não me deu espírito de covardia, mas de poder e moderação."</p>
                     </div>
                 </div>
             </div>
@@ -225,33 +191,16 @@
             var i;
             var x = document.getElementsByClassName("tab-content");
             var y = document.getElementsByClassName("tab-btn");
-
             for (i = 0; i < x.length; i++) {
                 x[i].style.display = "none";
             }
             for (i = 0; i < y.length; i++) {
                 y[i].classList.remove("active");
             }
-            
-            // Ativa o conteúdo da aba
             document.getElementById(tabName).style.display = "block";
-
-            // Ativa o botão da aba
-            // Encontra o botão que foi clicado usando o evento
-            if (event && event.currentTarget) {
-                event.currentTarget.classList.add("active");
-            } else {
-                // Fallback para ativação inicial
-                document.querySelector(`[onclick*='${tabName}']`).classList.add('active');
-            }
+            event.currentTarget.classList.add("active");
         }
-        
-        // Ativa a aba "Prioridade Zero" na carga inicial
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById("prioridade").style.display = "block";
-            document.querySelector("[onclick*='prioridade']").classList.add('active');
-        });
+        document.getElementById("rotina").style.display = "block";
     </script>
 </body>
 </html>
-
