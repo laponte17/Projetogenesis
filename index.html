@@ -2,51 +2,41 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Protocolo Gênesis Mobile</title>
+    
+    <!-- Configurações para parecer App Nativo no iPhone -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gênesis">
+    <meta name="theme-color" content="#000000">
+    
+    <title>Protocolo Gênesis V2.4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/a26c483a48.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #000000; color: #e5e5e5; -webkit-tap-highlight-color: transparent; padding-bottom: 80px; }
+        /* Ajuste para o topo do iPhone (Notch/Ilha Dinâmica) */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #000000; 
+            color: #e5e5e5; 
+            padding-top: env(safe-area-inset-top); 
+            padding-bottom: 80px; /* Espaço para navegação */
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none; /* Desabilita menu de toque longo */
+            user-select: none; /* Sensação de app (não seleciona texto) */
+        }
+        
         h1, h2, .title-font { font-family: 'Cinzel', serif; }
+        .tab-btn { transition: all 0.3s ease; border-bottom: 2px solid transparent; }
+        .tab-btn.active { border-bottom: 2px solid #d4af37; color: #d4af37; }
+        .card { background: #111111; border: 1px solid #333; }
         
-        /* Estilos de Navegação Mobile */
-        .nav-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #111111;
-            border-top: 1px solid #333;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            z-index: 50;
-            padding-bottom: env(safe-area-inset-bottom); /* Ajuste para iPhone X+ */
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #6b7280;
-            font-size: 0.7rem;
-            background: none;
-            border: none;
-            padding: 5px;
-            flex: 1;
-        }
-        .nav-item.active { color: #d4af37; }
-        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
-
-        .card { background: #111111; border: 1px solid #222; border-radius: 12px; margin-bottom: 1rem; }
-        
-        /* Botão S.O.S Pulsante */
-        .sos-btn {
+        /* Estilo do Botão de Pânico */
+        .panic-btn {
             background: linear-gradient(45deg, #7f1d1d, #991b1b);
-            box-shadow: 0 0 15px rgba(220, 38, 38, 0.4);
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
             animation: pulse 2s infinite;
-            border-radius: 12px;
         }
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
@@ -54,155 +44,169 @@
             100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
         }
 
-        /* Esconder scrollbar mas permitir scroll */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Barra de Navegação Fixa (Estilo App) */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #0a0a0a; /* Quase preto */
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-around;
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-top: 10px;
+            z-index: 50;
+            backdrop-filter: blur(10px); /* Efeito vidro */
+        }
+        
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            color: #6b7280;
+            background: none;
+            border: none;
+            font-size: 0.7rem;
+        }
+        
+        .nav-item i { font-size: 1.2rem; margin-bottom: 4px; }
+        .nav-item.active { color: #d4af37; }
+        .nav-item.sos-active { color: #ef4444; }
+
+        /* Animações Suaves */
+        .tab-content { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="antialiased selection:bg-yellow-900 selection:text-white">
+<body>
 
-    <div class="p-4 max-w-md mx-auto">
+    <div class="max-w-md mx-auto p-4">
         
-        <!-- Header Compacto -->
-        <header class="text-center mb-6 mt-2">
-            <h1 class="text-2xl font-bold text-white tracking-widest border-b border-gray-800 pb-4">GÊNESIS V2.4</h1>
+        <!-- Header -->
+        <header class="text-center mb-6 mt-2 border-b border-gray-900 pb-4">
+            <h1 class="text-2xl font-bold text-white tracking-widest">GÊNESIS V2.4</h1>
+            <p class="text-xs text-gray-500 mt-1 uppercase tracking-widest">Protocolo de Guerra</p>
         </header>
 
         <!-- CONTEÚDO: ROTINA BLINDADA -->
-        <div id="rotina" class="tab-content block animate-fade-in">
-            <div class="mb-4">
-                <h2 class="text-xl text-d-gold mb-3 pl-2 border-l-2 border-yellow-600">Rotina Diária</h2>
-                <p class="text-xs text-gray-500 mb-4 pl-2">Disciplina é liberdade. Siga o plano.</p>
-            </div>
-
-            <div class="space-y-4">
-                <!-- Manhã -->
-                <div class="card p-5 border-l-4 border-blue-600 bg-gradient-to-br from-gray-900 to-black">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="font-bold text-blue-400 text-lg">05:00 - 07:30</h3>
-                        <i class="fas fa-sun text-blue-900 text-xl"></i>
-                    </div>
-                    <p class="text-sm text-gray-300 font-semibold mb-2">Neuro-Ativação (Propósito)</p>
-                    <ul class="text-xs text-gray-400 space-y-3">
-                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-800 mt-0.5 mr-2"></i> <span><strong>Oração e Palavra:</strong> Leia e escreva um versículo.</span></li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-800 mt-0.5 mr-2"></i> <span><strong>Banho Frio:</strong> 10min. Disciplina física.</span></li>
-                    </ul>
-                </div>
-                
-                <!-- Dia -->
-                <div class="card p-5 border-l-4 border-yellow-600 bg-gradient-to-br from-gray-900 to-black">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="font-bold text-yellow-400 text-lg">08:00 - 18:00</h3>
-                        <i class="fas fa-briefcase text-yellow-900 text-xl"></i>
-                    </div>
-                    <p class="text-sm text-gray-300 font-semibold mb-2">Guerra Financeira</p>
-                    <ul class="text-xs text-gray-400 space-y-3">
-                        <li class="flex items-start"><i class="fas fa-check-circle text-yellow-800 mt-0.5 mr-2"></i> <span><strong>Foco Total:</strong> Blocos de 90min sem celular.</span></li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-yellow-800 mt-0.5 mr-2"></i> <span><strong>Micro-Ação:</strong> Anote 1 vitória a cada 90min.</span></li>
-                    </ul>
-                </div>
-                
-                <!-- Noite -->
-                <div class="card p-5 border-l-4 border-purple-600 bg-gradient-to-br from-gray-900 to-black">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="font-bold text-purple-400 text-lg">19:00 - 22:00</h3>
-                        <i class="fas fa-moon text-purple-900 text-xl"></i>
-                    </div>
-                    <p class="text-sm text-gray-300 font-semibold mb-2">Conexão e Descanso</p>
-                    <ul class="text-xs text-gray-400 space-y-3">
-                        <li class="flex items-start"><i class="fas fa-check-circle text-purple-800 mt-0.5 mr-2"></i> <span><strong>21:30 Comunicação:</strong> Relatório e amor para Mariana.</span></li>
-                        <li class="flex items-start"><i class="fas fa-check-circle text-purple-800 mt-0.5 mr-2"></i> <span><strong>Higiene do Sono:</strong> Sem telas 1h antes.</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- CONTEÚDO: GUERRA PRODUTIVIDADE -->
-        <div id="trabalho" class="tab-content hidden animate-fade-in">
-             <div class="mb-4">
-                <h2 class="text-xl text-green-500 mb-3 pl-2 border-l-2 border-green-600">Guerra Produtividade</h2>
+        <div id="rotina" class="tab-content block space-y-4 pb-20">
+            <!-- Manhã -->
+            <div class="card p-5 border-l-4 border-blue-600 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-2 opacity-10"><i class="fas fa-sun text-6xl text-blue-500"></i></div>
+                <h3 class="text-lg font-bold text-blue-400 mb-1">05:00 - 07:30</h3>
+                <p class="text-xs text-gray-400 mb-3 uppercase tracking-wide">Neuro-Ativação</p>
+                <ul class="text-sm text-gray-300 space-y-3">
+                    <li class="flex items-start"><i class="fas fa-check-circle text-blue-900 mt-1 mr-2"></i> <span><strong>Oração e Palavra:</strong> Leia e escreva.</span></li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-blue-900 mt-1 mr-2"></i> <span><strong>Banho Frio:</strong> Disciplina física.</span></li>
+                </ul>
             </div>
             
-            <!-- Meta Principal -->
-            <div class="bg-green-900/20 border border-green-800 p-6 rounded-xl text-center mb-6">
+            <!-- Dia -->
+            <div class="card p-5 border-l-4 border-yellow-600 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-2 opacity-10"><i class="fas fa-briefcase text-6xl text-yellow-500"></i></div>
+                <h3 class="text-lg font-bold text-yellow-400 mb-1">08:00 - 18:00</h3>
+                <p class="text-xs text-gray-400 mb-3 uppercase tracking-wide">Guerra Financeira</p>
+                <ul class="text-sm text-gray-300 space-y-3">
+                    <li class="flex items-start"><i class="fas fa-check-circle text-yellow-900 mt-1 mr-2"></i> <span><strong>Foco Total:</strong> Blocos de 90min.</span></li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-yellow-900 mt-1 mr-2"></i> <span><strong>Micro-Ação:</strong> Anote 1 vitória/bloco.</span></li>
+                </ul>
+            </div>
+            
+            <!-- Noite -->
+            <div class="card p-5 border-l-4 border-purple-600 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-2 opacity-10"><i class="fas fa-moon text-6xl text-purple-500"></i></div>
+                <h3 class="text-lg font-bold text-purple-400 mb-1">19:00 - 22:00</h3>
+                <p class="text-xs text-gray-400 mb-3 uppercase tracking-wide">Conexão e Descanso</p>
+                <ul class="text-sm text-gray-300 space-y-3">
+                    <li class="flex items-start"><i class="fas fa-check-circle text-purple-900 mt-1 mr-2"></i> <span><strong>21:30:</strong> Relatório e Amor p/ Ela.</span></li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-purple-900 mt-1 mr-2"></i> <span><strong>Higiene do Sono:</strong> Sem telas.</span></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- CONTEÚDO: GUERRA PRODUTIVIDADE -->
+        <div id="trabalho" class="tab-content hidden space-y-6 pb-20">
+            <!-- META FINANCEIRA -->
+            <div class="bg-green-900/20 border border-green-800 p-6 rounded-xl text-center relative overflow-hidden">
+                <div class="absolute -top-4 -left-4 w-24 h-24 bg-green-500 rounded-full opacity-10 blur-xl"></div>
                 <p class="text-xs text-green-400 uppercase tracking-widest mb-1">Meta Mensal</p>
                 <h3 class="text-4xl font-bold text-white">R$ 5.000<span class="text-lg text-green-500">,00</span></h3>
-                <div class="w-full bg-gray-800 h-2 rounded-full mt-4">
-                    <div class="bg-green-600 h-2 rounded-full" style="width: 5%"></div> <!-- Barra de progresso visual -->
-                </div>
+                <p class="text-xs text-gray-500 mt-2">Sua fuga é o trabalho. O foco é a venda.</p>
             </div>
 
             <div class="space-y-4">
                 <div class="card p-5">
-                    <h3 class="font-bold text-white mb-3 flex items-center"><i class="fas fa-bullhorn text-green-500 mr-2"></i> Venda Direta (Leão)</h3>
+                    <h3 class="font-bold text-white mb-3 flex items-center text-sm"><i class="fas fa-bullhorn text-green-500 mr-2"></i> Venda Direta (Leão)</h3>
                     <ul class="text-xs text-gray-400 space-y-2">
-                        <li class="bg-gray-900 p-2 rounded border border-gray-800">🎯 <strong>Alvo:</strong> 30 Prospecções/dia (WhatsApp/Insta).</li>
-                        <li class="bg-gray-900 p-2 rounded border border-gray-800">📦 <strong>Oferta:</strong> Site One-Page + Tráfego 7 dias.</li>
-                        <li class="bg-gray-900 p-2 rounded border border-gray-800">💰 <strong>Cobrança:</strong> Prioridade total em receber.</li>
+                        <li class="bg-gray-900 p-3 rounded border border-gray-800 flex items-center"><i class="fas fa-crosshairs text-green-700 mr-2"></i> <strong>30 Prospecções/dia</strong></li>
+                        <li class="bg-gray-900 p-3 rounded border border-gray-800 flex items-center"><i class="fas fa-box-open text-green-700 mr-2"></i> <strong>Oferta:</strong> Site One-Page + Tráfego.</li>
+                        <li class="bg-gray-900 p-3 rounded border border-gray-800 flex items-center"><i class="fas fa-hand-holding-usd text-green-700 mr-2"></i> <strong>Cobrança:</strong> Foco em receber.</li>
                     </ul>
                 </div>
 
                 <div class="card p-5">
-                    <h3 class="font-bold text-white mb-3 flex items-center"><i class="fas fa-book text-blue-500 mr-2"></i> Estudo (18h-21h)</h3>
-                    <p class="text-xs text-gray-400 mb-2">Aprenda o que paga suas contas.</p>
-                    <div class="flex gap-2">
-                        <span class="bg-blue-900/30 text-blue-300 text-xs px-3 py-1 rounded-full border border-blue-900">Persuasão</span>
-                        <span class="bg-blue-900/30 text-blue-300 text-xs px-3 py-1 rounded-full border border-blue-900">Tráfego Pago</span>
+                    <h3 class="font-bold text-white mb-3 flex items-center text-sm"><i class="fas fa-book text-blue-500 mr-2"></i> Estudo (18h-21h)</h3>
+                    <div class="flex gap-2 flex-wrap">
+                        <span class="bg-blue-900/30 text-blue-300 text-xs px-3 py-2 rounded border border-blue-900">Persuasão</span>
+                        <span class="bg-blue-900/30 text-blue-300 text-xs px-3 py-2 rounded border border-blue-900">Tráfego Pago</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- CONTEÚDO: MENTALIDADE -->
-        <div id="mentalidade" class="tab-content hidden animate-fade-in">
-             <div class="mb-4">
-                <h2 class="text-xl text-cyan-400 mb-3 pl-2 border-l-2 border-cyan-600">Neuro & Bíblia</h2>
+        <!-- CONTEÚDO: NEURO & BÍBLIA -->
+         <div id="mentalidade" class="tab-content hidden space-y-4 pb-20">
+             <div class="grid grid-cols-1 gap-4">
+                <div class="card p-5 border-t-4 border-cyan-500">
+                    <h3 class="text-base font-bold text-cyan-400 mb-2"><i class="fas fa-microchip mr-2"></i>O Cérebro Adicto</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed"><strong>Recompensa de Esforço:</strong> Seu cérebro quer dopamina. Não dê de graça. Faça ele trabalhar por ela.</p>
+                </div>
+                <div class="card p-5 border-t-4 border-yellow-500">
+                    <h3 class="text-base font-bold text-yellow-400 mb-2"><i class="fas fa-bible mr-2"></i>A Armadura de Deus</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed"><strong>Fuga da Tentação:</strong> "Fugi da impureza." Não lute parado. Saia do ambiente.</p>
+                </div>
             </div>
-
-            <div class="grid grid-cols-1 gap-4">
-                <div class="card p-5 border-t-2 border-cyan-500">
-                    <h3 class="font-bold text-cyan-400 mb-2 text-sm">🧠 Neurociência do Hábito</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed"><strong>Recompensa de Esforço:</strong> Seu cérebro quer dopamina. Não dê a ele de graça (vício). Faça ele trabalhar por ela (venda, treino).</p>
-                </div>
-                
-                <div class="card p-5 border-t-2 border-yellow-500">
-                    <h3 class="font-bold text-yellow-400 mb-2 text-sm">✝️ Identidade Bíblica</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">"Fugi da impureza." Não lute parado. Saia do ambiente. Sua força vem do alto.</p>
-                </div>
-
-                <!-- Código de Honra Compacto -->
-                <div class="card p-5 bg-gray-900">
-                    <h3 class="font-bold text-white mb-3 text-sm"><i class="fas fa-shield-alt text-green-500 mr-2"></i>Código de Honra</h3>
-                    <ul class="text-xs text-gray-400 space-y-2">
-                        <li>✅ Sobriedade Absoluta</li>
-                        <li>✅ Integridade Financeira</li>
-                        <li>✅ Verdade Radical</li>
+            
+            <div class="mt-4">
+                <h3 class="text-sm font-bold text-gray-500 mb-3 uppercase tracking-wide ml-1">Código de Honra</h3>
+                <div class="card p-4 bg-gray-900/50">
+                    <ul class="text-xs text-gray-400 space-y-3">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Sobriedade Absoluta</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Integridade Financeira</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Verdade Radical</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <!-- CONTEÚDO: S.O.S (PÂNICO) -->
-        <div id="sos" class="tab-content hidden animate-fade-in text-center pb-20">
-            <div class="mt-8 mb-8">
-                <div class="sos-btn p-8 rounded-full w-32 h-32 flex items-center justify-center mx-auto mb-6 border-4 border-red-900">
+        <div id="sos" class="tab-content hidden text-center pb-24 pt-4">
+            
+            <div class="relative w-40 h-40 mx-auto mb-6 flex items-center justify-center">
+                <div class="absolute w-full h-full bg-red-600 rounded-full opacity-20 animate-ping"></div>
+                <button class="relative w-32 h-32 bg-gradient-to-br from-red-900 to-red-700 rounded-full shadow-2xl border-4 border-red-950 flex items-center justify-center">
                     <i class="fas fa-hand-paper text-4xl text-white"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-red-500 mb-2">PARE AGORA</h2>
-                <p class="text-sm text-gray-400 px-4">A vontade vai passar em 15 minutos. Não jogue tudo fora.</p>
+                </button>
             </div>
+            
+            <h2 class="text-2xl font-bold text-red-500 mb-2 tracking-widest">PARE AGORA</h2>
+            <p class="text-xs text-gray-400 mb-8 px-8">A vontade é passageira (15 min). O arrependimento é eterno.</p>
 
             <div class="text-left space-y-3 px-2">
-                <div class="card p-4 border-l-4 border-red-600">
-                    <h4 class="text-red-400 font-bold text-sm">1. RESPIRE</h4>
-                    <p class="text-xs text-gray-400">10 vezes fundo. 4s inspira, 4s segura, 4s solta.</p>
+                <div class="card p-4 border-l-4 border-red-800 bg-red-950/10">
+                    <h4 class="text-red-400 font-bold text-sm mb-1">1. RESPIRAÇÃO TÁTICA</h4>
+                    <p class="text-xs text-gray-500">4s inspira, 4s segura, 4s solta. (10x)</p>
                 </div>
-                <div class="card p-4 border-l-4 border-red-600">
-                    <h4 class="text-red-400 font-bold text-sm">2. SAIA DAQUI</h4>
-                    <p class="text-xs text-gray-400">Mude de ambiente. Jogue água na cara.</p>
+                <div class="card p-4 border-l-4 border-red-800 bg-red-950/10">
+                    <h4 class="text-red-400 font-bold text-sm mb-1">2. QUEBRA DE PADRÃO</h4>
+                    <p class="text-xs text-gray-500">Saia do quarto. Jogue água gelada no rosto.</p>
                 </div>
-                <div class="card p-4 border-l-4 border-red-600">
-                    <h4 class="text-red-400 font-bold text-sm">3. ORE</h4>
+                <div class="card p-4 border-l-4 border-red-800 bg-red-950/10">
+                    <h4 class="text-red-400 font-bold text-sm mb-1">3. PALAVRA</h4>
                     <p class="text-xs text-gray-400 italic">"Esperei com paciência no SENHOR..." (Salmo 40)</p>
                 </div>
             </div>
@@ -210,7 +214,7 @@
 
     </div>
 
-    <!-- Navegação Inferior Fixa (App Style) -->
+    <!-- Navegação Inferior (App Nativo) -->
     <nav class="nav-bar">
         <button onclick="openTab(event, 'rotina')" class="nav-item active">
             <i class="fas fa-clock"></i>
@@ -224,47 +228,47 @@
             <i class="fas fa-brain"></i>
             <span>Mente</span>
         </button>
-        <button onclick="openTab(event, 'sos')" class="nav-item text-red-500">
-            <i class="fas fa-exclamation-circle"></i>
+        <button onclick="openTab(event, 'sos')" class="nav-item text-red-600">
+            <i class="fas fa-exclamation-triangle"></i>
             <span>S.O.S</span>
         </button>
     </nav>
 
     <script>
         function openTab(event, tabName) {
-            // Esconde todos os conteúdos
             var contents = document.getElementsByClassName("tab-content");
             for (var i = 0; i < contents.length; i++) {
                 contents[i].style.display = "none";
             }
 
-            // Remove classe ativa de todos os botões
             var navItems = document.getElementsByClassName("nav-item");
             for (var i = 0; i < navItems.length; i++) {
                 navItems[i].classList.remove("active");
-                // Reseta cores dos ícones se necessário (exceto SOS que é sempre vermelho)
-                if(!navItems[i].classList.contains('text-red-500')) {
+                navItems[i].classList.remove("sos-active");
+                
+                // Resetar cor padrão se não for o botão SOS
+                if(!navItems[i].classList.contains('text-red-600')) {
                      navItems[i].style.color = "#6b7280"; 
                 }
             }
 
-            // Mostra o conteúdo selecionado
             document.getElementById(tabName).style.display = "block";
 
-            // Ativa o botão clicado
             if(event.currentTarget) {
-                event.currentTarget.classList.add("active");
-                if(!event.currentTarget.classList.contains('text-red-500')) {
+                if(event.currentTarget.classList.contains('text-red-600')) {
+                    event.currentTarget.classList.add("sos-active");
+                } else {
+                    event.currentTarget.classList.add("active");
                     event.currentTarget.style.color = "#d4af37";
                 }
             }
-            
-            // Scroll suave para o topo
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Inicia na aba Rotina
         document.getElementById("rotina").style.display = "block";
+        
+        // Bloquear seleção de texto para sensação de app
+        document.addEventListener('contextmenu', event => event.preventDefault());
     </script>
 </body>
 </html>
